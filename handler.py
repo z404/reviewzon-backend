@@ -20,7 +20,7 @@ class logger:
         self.key = str(config[2])
         self.colors = {'lightgreen': '#14FCB9', 'green': '#57FC14',
                        'red': '#FF0000', 'yellow': '#FFFF00'}
-        self.strings = json.load(open('strings.json'))
+        self.strings = json.load(open('strings.json', encoding='utf-8'))
         self.output_counter = 0
 
     def log(self, message, color='green', end=False, error=False):
@@ -33,15 +33,20 @@ class logger:
         if self.activator:
             self.db.child("livedata").child(self.key).remove()
 
-    def create_output(self, prompt, file_path=None, file_name=None):
+    def create_output(self, prompt, file_path=None, file_name=None, list_of_outputs=None):
         if self.activator and self.output_activator:
-            try:
-                cloud_file_name = 'files/'+self.key+"/"+file_name
-            except TypeError:
-                pass
-            url = "None"
-            data = self.strings[prompt]['text']
-            title = self.strings[prompt]['title']
+            if prompt == 'final_prediction':
+                url = "None"
+                title = "Final results"
+                data = f"The model was trained with the train set and tested with the test set to achieve the following scores\nAccuracy = {list_of_outputs[0]}\nPrecision = {list_of_outputs[1]}\nRecall Score = {list_of_outputs[2]}\nF1 Score = {list_of_outputs[3]}"
+            else:
+                try:
+                    cloud_file_name = 'files/'+self.key+"/"+file_name
+                except TypeError:
+                    pass
+                url = "None"
+                data = self.strings[prompt]['text']
+                title = self.strings[prompt]['title']
 
             if file_path is not None:
                 self.storage.child(cloud_file_name).put(file_path)

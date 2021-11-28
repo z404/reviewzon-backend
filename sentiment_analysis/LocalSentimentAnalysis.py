@@ -79,7 +79,7 @@ class SentimentAnalysis_Local:
                 dfi.export(self.process_reviews[:20],
                            'images/'+self.logger.key+'_process_reviews.png')
                 self.logger.create_output(
-                    'train_data_gist', 'images/'+self.logger.key+'_process_reviews.png', 'preprocessed_data.png')
+                    'train_data_gist_local', 'images/'+self.logger.key+'_process_reviews.png', 'preprocessed_data.png')
             except OSError:
                 pass
             self.logger.log("Preprocessing complete...")
@@ -791,15 +791,18 @@ class SentimentAnalysis_Local:
         dict_of_deconstruct = {0: 'Negative', 1: 'Neutral', 2: 'Positive'}
         y_pred = [dict_of_deconstruct[i] for i in self.mlmodel.predict(smol_X)]
         self.logger.log('>Prediction complete', 'lightgreen')
-        self.logger.create_output('final_prediction_local')
+        # self.logger.create_output('final_prediction_local')
         return y_pred
 
     def accuracy_score(self, y_true, y_pred):
         '''
         This function calculates the accuracy of the model
         '''
-        return [accuracy_score(y_true, y_pred), precision_score(
-            y_true, y_pred, average="weighted"), recall_score(y_true, y_pred, average="weighted"), f1_score(y_true, y_pred, average="weighted")]
+        list_of_predictions = [accuracy_score(y_true, y_pred), precision_score(y_true, y_pred, average='weighted'), recall_score(
+            y_true, y_pred, average="weighted"), f1_score(y_true, y_pred, average="weighted")]
+        self.logger.create_output(
+            'final_prediction', list_of_outputs=list_of_predictions)
+        return list_of_predictions
 
     def check_sentiment(self, list_of_reviews: list) -> str:
         '''

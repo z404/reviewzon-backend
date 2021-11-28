@@ -1,78 +1,78 @@
 {   
     "obtaining_data" : {
         "title": "Obtaining Data",
-        "text" : "This output talks about the process of obtaining data"
+        "text" : "If the user chooses to give amazon links for either the train set or the test set, the program is able to download the reviews of the provided links and save them into a variable in a usable format. Using the base product link of a product, we’re able to translate the URL into the URL for the “all reviews” page of the product. Now we need to extract all the reviews from this current URL.\n\nTo achieve this, the project uses the python package called scrapy. This python package can scrape through a given html file and extract certain elements from the file that are specified by the programmer. This comes in handy when we want to look for reviews on a product page. Using python’s request module, we download the webpage of the URL generated above, and then use scrapy to create a DataFrame of reviews and other details. \n\nOne problem that can be faced when downloading reviews is the fact that amazon rate limits the download of their webpages to 5 pages per minute. As this is extremely slow, we use ScraperAPI python wrapper to obtain a proxy and bypass the rate limit."
     },
     "preprocessing_output" : {
         "title": "Preprocessing Output",
-        "text": "This output talks about preprocessing and what we did to preprocess the data"
+        "text": "Once the DataFrame of data has been obtained, it has to be cleaned so as to remove freak errors and outliers. The steps takes to preprocess the data are as follows\n\n⠀⠀⠀★⠀Remove rows with NaN values. If only the review is missing, then replace the NaN with “Missing”.\n⠀⠀⠀★⠀Combine the title of the review and the review itself, as they convey the same sentiment most of the time.\n⠀⠀⠀★⠀Convert star rating of the product into sentiment values (positive, negative and neutral). This will be the project’s target class.\n⠀⠀⠀★⠀Split the date column into year, month, and day of the month so as to extract more meaning from data that is already present\n⠀⠀⠀★⠀Remove whitespaces from reviews\n⠀⠀⠀★⠀If “—people found this review helpful” data is present in the DataFrame, then calculate the value of helpfulness.\n⠀⠀⠀★⠀Remove stop words and punctuation from the reviews, as these do not provide too much meaning to the sentiment of the statement.\n⠀⠀⠀★⠀Stem the words of the reviews. Stemming is the process of reducing a word to its word stem that affixes to suffixes and prefixes or to the roots of words known as a lemma.\n⠀⠀⠀★⠀After following the above steps, the data is in good condition for us to gain a better insight into it."
     },
-    "train_data_gist" : {
+    "train_data_gist_local" : {
         "title": "Train Data Gist",
-        "text": "This picture shows a small segment of the data that was used to train the ML model"
+        "text": "This picture shows a small segment of the data that was used to train the ML model. As is visible in the segment, it has the following columns: [Index, reviewerID, ASIN, reviewText, overall, summary, reviewTime, reviews, sentiment, year, month, day, helpful_rate]. These columns are extremely useful and can be used to obtain a lot of useful trends and patterns from the dataset."
+    },
+    "train_data_gist_live" : {
+        "title": "Test Data Gist",
+        "text": "This picture shows a small segment of the data that was used to train the ML model. As is visible in the segment, it has the following columns: [Index, reviews, sentiment, year, month, day, overall]. These columns are extremely useful and can be used to obtain a lot of useful trends and patterns from the dataset."
     },
     "sentiment_helpful_rate" : {
         "title": "Sentiment vs Helpfulness Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph has sentiment values as the X axis and the helpfulness values as the Y axis. This graph represents what sentiment of reviews people most likely would find helpful"
     },
     "year_sentiment_count" : {
         "title": "Year vs Sentiment Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph has time (in years) as the X axis and Sentiment count as the Y axis. Each line of the graph corresponds to a sentiment. This graph can show a viewer the popularity of a product over time. It can show the ability of the product to stay consistent over the years"
     },
     "day_reviews_count" : {
         "title": "Day vs Reviews Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This bar chart displays the number of reviews for each day of the month. If there is a pattern to the sale of this item, this graph can display it. (For example, if the item goes on sale on every 5th of the month, the review count there would be higher than the others)"
     },
     "polarity_distribution" : {
         "title": "Polarity Distribution Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph shows the frequency of the reviews against their polarity. From this graph, we can infer what type of review / sentiment our data majorly consists of. If the peak of the frequency is at 0, then most reviews are neutral. If it's positive, then most reviews are positive, and vice versa."
     },
     "rating_distribution" : {
         "title": "Rating Distribution Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph plots the frequency of reviews against their star ratings of the product. It shows us the general sentiment of the product"
     },
     "review_len_distribution" : {
         "title": "Review Length Distribution Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This distribution shows the general size of reviews. From this graph, we can infer the general trend of how long a person wants to describe their experience of a product"
     },
     "review_word_count_distribution" : {
         "title": "Review Word Count Distribution Graph",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This distribution shows the general size of reviews in terms of words. This graph can also draw the same conclusions as the Review Length Distribution Graph"
     },
     "word_count_plots_1" : {
         "title": "Word Count Distribution Graph 1",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph shows the most common words in the reviews, grouped by sentiment. It is one of the most significant outputs of the project. In this graph, each indivisual word is counted and grouped by sentiment. But most of these words are not very meaningful in understanding the sentiment of the text. Therefore, instead of graphing each indivisual word, we can try and find the most frequently occuring phrase with 2 words to see if any meaning arizes"
     },
     "word_count_plots_2" : {
         "title": "Word Count Distribution Graph 2",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph shows the most common phrases with 2 words in the reviews, grouped by sentiment. Here, we can see some meaning arising, as there is a correlation to sentiment and the phrase"
     },
     "word_count_plots_3" : {
         "title": "Word Count Distribution Graph 3",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph shows the most common phrases with 3 words in the reviews, grouped by sentiment. Here, we can see an even stronger correlation between the sentiment and the phrase"
     },
     "wordcloud_positive" : {
         "title": "Wordcloud Positive",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This is a wordcloud of the positive reviews. Word clouds are a visual representation of the words that are most frequently used in a text. This wordcloud is generated using the positive reviews of the product. The more frequent the word is, the bigger the size of the word."
     },
     "wordcloud_negative" : {
         "title": "Wordcloud Negative",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This is a wordcloud of the negative reviews. Word clouds are a visual representation of the words that are most frequently used in a text. This wordcloud is generated using the negative reviews of the product. The more frequent the word is, the bigger the size of the word."
     },
     "wordcloud_neutral" : {
         "title": "Wordcloud Neutral",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This is a wordcloud of the neutral reviews. Word clouds are a visual representation of the words that are most frequently used in a text. This wordcloud is generated using the neutral reviews of the product. The more frequent the word is, the bigger the size of the word."
     },
     "confusion_matrix" : {
         "title": "Confusion Matrix",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph shows the confusion matrix of the model. The confusion matrix is a table that shows the number of correct and incorrect predictions made by the model. The diagonal of the table shows the number of correct predictions made by the model. The other cells show the number of incorrect predictions made by the model. The dark blue rectangle shows where the majority of the correct predictions are made. This is a good indicator of the model’s performance."
     },
     "roc_curve" : {
         "title": "ROC Curve",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
-    },
-    "final_prediction_local" : {
-        "title": "Final Prediction",
-        "text": "This picture shows a small segment of the data that was used to test the ML model"
+        "text": "This graph displays the ROC Curve of the model and the AUC score of the model. The ROC curve is a graph that shows the true positive rate (TPR) and false positive rate (FPR) of the model. The AUC score is the area under the ROC curve. The AUC score is a good indicator of the model’s performance."
     }
 }
