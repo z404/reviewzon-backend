@@ -6,7 +6,7 @@ from handler import organizer
 import pyrebase
 import json
 import random
-import time
+import os
 from sentiment_analysis.LocalSentimentAnalysis import SentimentAnalysis_Local
 from sentiment_analysis.LiveSentimentAnalysis import SentimentAnalysis_Live
 app = FastAPI()
@@ -24,6 +24,14 @@ with open("config.json") as config_file:
 
 firebase = pyrebase.initialize_app(config['firebaseConfig'])
 db = firebase.database()
+
+# if 'models' directory does not exist, create it
+if not os.path.exists('models'):
+    os.makedirs('models')
+
+# if 'images' directory does not exist, create it
+if not os.path.exists('images'):
+    os.makedirs('images')
 
 
 @app.post("/")

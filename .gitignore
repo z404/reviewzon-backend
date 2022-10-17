@@ -133,3 +133,4 @@ config.json
 not_reviews.py
 livedata.csv
 .vscode/
+firebase-admin-cred.json

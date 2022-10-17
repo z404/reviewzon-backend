@@ -178,7 +178,7 @@ class SentimentAnalysis_Local:
         self.process_reviews["day"] = new1[1]
 
         self.process_reviews = self.process_reviews.drop(['date'], axis=1)
-        self.logger.log(">Creating the 'helpfulness column", 'lightgreen')
+        self.logger.log(">Creating the 'helpfulness column'", 'lightgreen')
         # Splitting the dataset based on comma and square bracket
         new1 = self.process_reviews["helpful"].str.split(",", n=1, expand=True)
         new2 = new1[0].str.split("[", n=1, expand=True)
