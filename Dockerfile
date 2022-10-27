@@ -1,18 +1,18 @@
 # dockerfile for FastAPI app
 # Version 1.0
-FROM python:3.6
+FROM python:3.10
 
 # set a directory for the app
 WORKDIR /app
 
-# copy all the files to the container
-COPY . /app
+# copy only the requirements.txt first to leverage Docker cache
+COPY requirements.txt requirements.txt
 
 # install dependencies
 RUN pip install -r requirements.txt
 
-# tell the port number the container should expose
-EXPOSE 8000
+# copy the content of the local src directory to the working directory
+COPY . /app/
 
-# run the command
-CMD ["python3", "app.py"]
+# command to run on container start
+RUN ["python3", "app.py"]
