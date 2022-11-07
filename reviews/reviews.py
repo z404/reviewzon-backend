@@ -10,6 +10,7 @@ from dateutil import parser as dateparser
 import datetime
 import aiohttp
 import os
+import json
 
 
 # reviewurl = "https://www.amazon.in/OJOS-Silicone-Compatible-Generation-Protective/product-reviews/B07Y5N98KS/ref=cm_cr_dp_d_show_all_btm?ie=UTF8&reviewerType=all_reviews"
@@ -17,7 +18,7 @@ import os
 
 class ReviewScraper:
 
-    def __init__(self, logger) -> None:
+    def __init__(self) -> None:
 
         # Create an Extractor by reading from the YAML file
         cwd = os.curdir
@@ -37,7 +38,7 @@ class ReviewScraper:
         self.count = 0
         self.collected_data = []
         self.flag = True
-        self.logger = logger
+        # self.logger = logger
         self.valid_state = True
 
     async def scrape(self, r: ClientResponse):
@@ -85,10 +86,10 @@ class ReviewScraper:
                     if data['next_page'] == None and self.flag:
                         if 'Timed out' not in response_text[:25] and 'Request failed' not in response_text[:25]:
                             self.flag = False
-                            self.logger.log(
+                            print(
                                 ">No more pages! Stopping further download..", "red")
         except aiohttp.client_exceptions.ClientOSError:
-            self.logger.log('>Network error occured', 'red')
+            print('>Network error occured', 'red')
         return rows
 
     async def main(self, baseurl: str, begin_pages: int = 1, num_pages: int = 12):
@@ -140,19 +141,19 @@ class ReviewScraper:
         all_page_data = []
         for i in range(begin_pages, begin_pages+num_pages+1, total_keys*5):
             if self.flag:
-                self.logger.log(">Downloading pages "+str(i) +
-                                " to "+str(i+(total_keys*5)-1), "lightgreen")
+                print(">Downloading pages "+str(i) +
+                      " to "+str(i+(total_keys*5)-1), "lightgreen")
                 asyncio.run(
                     self.main(baseurl=baseurl, begin_pages=i,
                               num_pages=total_keys*5-1)
                 )
                 all_page_data.extend(self.all_pages)
             else:
-                # self.logger.log(">No more pages")
+                # print(">No more pages")
                 break
         self.collected_data.extend(all_page_data)
         end_time = datetime.datetime.now()
-        # self.logger.log("Total time taken:"+ str(end_time-start_time))
+        # print("Total time taken:"+ str(end_time-start_time))
         return all_page_data
 
     def retrieve_data(self):
@@ -164,9 +165,14 @@ class ReviewScraper:
 
 if __name__ == "__main__":
     obj = ReviewScraper()
-    baseurl1 = input()
+    baseurl1 = input('enter url: ')
     # baseurl2 = input()
     # obj.get_pages_data_unanimous(baseurl=baseurl, begin_pages=5, num_pages=20)
     obj.get_reviews(baseurl=baseurl1, num_pages=120, begin_pages=1)
     # obj.get_reviews(baseurl=baseurl2, num_pages=80, begin_pages=2)
     print(len(obj.collected_data))
+    # print pretty json
+    # first element
+    print(json.dumps(obj.collected_data[0], indent=4))
+    # second element
+    print(json.dumps(obj.collected_data[1], indent=4))
